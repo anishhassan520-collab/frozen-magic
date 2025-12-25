@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Frozen Magic for Naaz ❄️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap');
+
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    font-family:'Cinzel',serif;
+    color:#eafcff;
+    background:linear-gradient(120deg,#020b13,#1b5e8c,#020b13);
+    background-size:400% 400%;
+    animation:aurora 18s ease infinite;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+@keyframes aurora{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+/* Snow */
+.fx{
+    position:fixed;
+    top:-10px;
+    pointer-events:none;
+    animation:fall linear infinite;
+}
+@keyframes fall{to{transform:translateY(120vh)}}
+
+.box{
+    max-width:500px;
+    padding:44px;
+    border-radius:42px;
+    background:rgba(255,255,255,0.18);
+    backdrop-filter:blur(18px);
+    box-shadow:0 0 80px rgba(180,240,255,0.7);
+    text-align:center;
+    animation:fade 1.6s ease;
+}
+
+.hidden{display:none}
+
+h1{
+    font-size:34px;
+    text-shadow:0 0 25px #bff7ff;
+}
+
+p{
+    font-size:18px;
+    line-height:1.9;
+}
+
+button{
+    margin-top:22px;
+    padding:14px 36px;
+    border-radius:45px;
+    border:none;
+    font-size:16px;
+    cursor:pointer;
+    background:linear-gradient(45deg,#7ddfff,#3fa9f5);
+    box-shadow:0 0 30px #bff7ff;
+    transition:0.35s;
+}
+button:hover{transform:scale(1.1)}
+
+@keyframes fade{
+    from{opacity:0;transform:scale(0.85)}
+    to{opacity:1;transform:scale(1)}
+}
+
+/* Name reveal */
+.name{
+    font-size:48px;
+    letter-spacing:4px;
+    opacity:0;
+    animation:iceReveal 3s ease forwards;
+}
+@keyframes iceReveal{
+    0%{opacity:0;filter:blur(10px)}
+    50%{opacity:0.7;filter:blur(2px)}
+    100%{opacity:1;filter:blur(0);text-shadow:0 0 30px #e8ffff}
+}
+
+#musicBtn{
+    position:fixed;
+    bottom:18px;
+    right:18px;
+    padding:12px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.35);
+    cursor:pointer;
+    font-size:18px;
+}
+</style>
+</head>
+
+<body onclick="startMusic()">
+
+<!-- 🎵 BACKGROUND MUSIC (FIXED) -->
+<audio id="bgm" loop preload="auto">
+    <source src="Bgm.mp3" type="audio/mpeg">
+</audio>
+
+<div id="musicBtn" onclick="toggleMusic()">🔊</div>
+
+<!-- STEP 1 -->
+<div class="box" id="s1">
+<h1>❄️ Frozen Silence</h1>
+<p id="t1"></p>
+<button onclick="nextStep(1)">Begin the journey ❄️</button>
+</div>
+
+<!-- STEP 2 -->
+<div class="box hidden" id="s2">
+<h1>🌬️ The Choice</h1>
+<p>
+The snow listens carefully.<br>
+What guides your heart?
+</p>
+<button onclick="choose('hope')">Hope ✨</button><br>
+<button onclick="choose('kindness')">Kindness 🤍</button><br>
+<button onclick="choose('light')">Light ❄️</button>
+</div>
+
+<!-- STEP 3 -->
+<div class="box hidden" id="s3">
+<h1>🧊 The Frozen Pause</h1>
+<p>
+The world grows quiet…<br>
+Something magical is about to appear.
+</p>
+<button onclick="nextStep(3)">Continue 💫</button>
+</div>
+
+<!-- ENDING A -->
+<div class="box hidden" id="endA">
+<h1>🎄 Merry Christmas</h1>
+<div class="name">Naaz</div>
+<p>
+You chose hope — and hope always shines ✨<br><br>
+May every winter in your life be softened by warmth,<br>
+every quiet moment filled with peace,<br>
+and every dream gently guided forward ❄️<br><br>
+🎅 Merry Christmas & a beautiful year ahead 🎄
+</p>
+</div>
+
+<!-- ENDING B -->
+<div class="box hidden" id="endB">
+<h1>🎄 Merry Christmas</h1>
+<div class="name">Naaz</div>
+<p>
+You chose kindness — the purest magic of all 🤍<br><br>
+May your heart always stay gentle,<br>
+your smiles always be real,<br>
+and your days filled with moments worth remembering ❄️✨<br><br>
+🎅 Wishing you a magical Christmas & New Year 🎄
+</p>
+</div>
+
+<script>
+const bgm = document.getElementById("bgm");
+bgm.volume = 0.6;
+
+let musicStarted = false;
+let path = "";
+
+/* FORCE music on user interaction */
+function startMusic(){
+    if(!musicStarted){
+        bgm.play().catch(()=>{});
+        musicStarted = true;
+    }
+}
+
+/* Typewriter */
+const text1 = "In a quiet frozen land, a small journey begins…";
+function typeText(id,text,i=0){
+    if(i<text.length){
+        document.getElementById(id).innerHTML += text.charAt(i);
+        setTimeout(()=>typeText(id,text,i+1),40);
+    }
+}
+typeText("t1", text1);
+
+function choose(choice){
+    path = choice;
+    nextStep(2);
+}
+
+function nextStep(step){
+    startMusic();
+
+    document.getElementById("s"+step)?.classList.add("hidden");
+
+    if(step === 1){
+        document.getElementById("s2").classList.remove("hidden");
+    }
+
+    if(step === 2){
+        document.getElementById("s3").classList.remove("hidden");
+    }
+
+    if(step === 3){
+        if(path === "kindness"){
+            document.getElementById("endB").classList.remove("hidden");
+        } else {
+            document.getElementById("endA").classList.remove("hidden");
+        }
+        snowStorm();
+    }
+}
+
+/* Music toggle */
+let on = true;
+function toggleMusic(){
+    on ? bgm.pause() : bgm.play();
+    on = !on;
+    musicBtn.innerHTML = on ? "🔊" : "🔇";
+}
+
+/* Snow */
+function snowStorm(){
+    for(let i=0;i<160;i++){
+        let f=document.createElement("div");
+        f.className="fx";
+        f.innerHTML=Math.random()>0.6?"✦":"❄";
+        f.style.left=Math.random()*100+"vw";
+        f.style.fontSize=(Math.random()*18+10)+"px";
+        f.style.animationDuration=(Math.random()*3+3)+"s";
+        document.body.appendChild(f);
+    }
+}
+snowStorm();
+</script>
+
+</body>
+</html>
